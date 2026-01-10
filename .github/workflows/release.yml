@@ -58,6 +58,14 @@ jobs:
             pkg-config \
             libssl-dev \
             libudev-dev \
+            libx11-dev \
+            libxi-dev \
+            libxrandr-dev \
+            libxkbcommon-dev \
+            libwayland-dev \
+            wayland-protocols \
+            libegl1-mesa-dev \
+            libgl1-mesa-dev \
             clang \
             cmake
 
