@@ -190,7 +190,7 @@ impl SystemCollector {
         {
             // Prefer Linux cpufreq if available: this is usually the most “Task Manager-like”
             // live frequency signal on bare-metal Linux.
-            if let Some(mhz) = read_linux_cpufreq_mhz() {
+            if let Some(mhz) = Self::read_linux_cpufreq_mhz() {
                 return Some(mhz);
             }
         }
