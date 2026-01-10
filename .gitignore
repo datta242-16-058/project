@@ -1,0 +1,13 @@
+target/
+**/target/
+
+# Logs / local outputs
+process_monitor.log
+smoke_out.txt
+smoke_err.txt
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.vscode/
+/target
