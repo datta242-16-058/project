@@ -415,53 +415,46 @@ impl SystemCollector {
     /// True disk throughput via OS counters (Windows only).
     ///
     /// Returns a map from PhysicalDisk instance name (e.g. "_Total", "0 C:") to (read_mibs, write_mibs).
+    #[cfg(windows)]
     pub fn get_physical_disk_throughput_mibs(
         &mut self,
     ) -> std::collections::HashMap<String, (f64, f64)> {
-        #[cfg(windows)]
-        {
-            #[allow(non_snake_case)]
-            #[derive(Debug, Deserialize)]
-            struct Win32PhysicalDisk {
-                Name: String,
-                #[serde(alias = "DiskReadBytesPerSec")]
-                #[serde(alias = "DiskReadBytesPersec")]
-                DiskReadBytesPersec: Option<u64>,
-                #[serde(alias = "DiskWriteBytesPerSec")]
-                #[serde(alias = "DiskWriteBytesPersec")]
-                DiskWriteBytesPersec: Option<u64>,
-            }
-
-            let mut out = std::collections::HashMap::new();
-            let Some(wmi_con) = self.ensure_wmi() else {
-                return out;
-            };
-
-            let rows: Vec<Win32PhysicalDisk> = wmi_con
-                .raw_query(
-                    "SELECT Name, DiskReadBytesPersec, DiskWriteBytesPersec FROM Win32_PerfFormattedData_PerfDisk_PhysicalDisk",
-                )
-                .unwrap_or_default();
-
-            for r in rows {
-                let read_bps = r.DiskReadBytesPersec.unwrap_or(0);
-                let write_bps = r.DiskWriteBytesPersec.unwrap_or(0);
-                out.insert(
-                    r.Name,
-                    (
-                        read_bps as f64 / 1_048_576.0,
-                        write_bps as f64 / 1_048_576.0,
-                    ),
-                );
-            }
-
-            out
+        #[allow(non_snake_case)]
+        #[derive(Debug, Deserialize)]
+        struct Win32PhysicalDisk {
+            Name: String,
+            #[serde(alias = "DiskReadBytesPerSec")]
+            #[serde(alias = "DiskReadBytesPersec")]
+            DiskReadBytesPersec: Option<u64>,
+            #[serde(alias = "DiskWriteBytesPerSec")]
+            #[serde(alias = "DiskWriteBytesPersec")]
+            DiskWriteBytesPersec: Option<u64>,
         }
 
-        #[cfg(not(windows))]
-        {
-            std::collections::HashMap::new()
+        let mut out = std::collections::HashMap::new();
+        let Some(wmi_con) = self.ensure_wmi() else {
+            return out;
+        };
+
+        let rows: Vec<Win32PhysicalDisk> = wmi_con
+            .raw_query(
+                "SELECT Name, DiskReadBytesPersec, DiskWriteBytesPersec FROM Win32_PerfFormattedData_PerfDisk_PhysicalDisk",
+            )
+            .unwrap_or_default();
+
+        for r in rows {
+            let read_bps = r.DiskReadBytesPersec.unwrap_or(0);
+            let write_bps = r.DiskWriteBytesPersec.unwrap_or(0);
+            out.insert(
+                r.Name,
+                (
+                    read_bps as f64 / 1_048_576.0,
+                    write_bps as f64 / 1_048_576.0,
+                ),
+            );
         }
+
+        out
     }
 
     pub fn collect_processes(&self) -> Vec<(u32, ProcessMetadata, ProcessMetrics)> {

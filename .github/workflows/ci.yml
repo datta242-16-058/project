@@ -34,6 +34,39 @@ jobs:
       - name: Rust build cache
         uses: Swatinem/rust-cache@v2
 
+      - name: Install Linux build dependencies
+        if: runner.os == 'Linux'
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            pkg-config \
+            libssl-dev \
+            libudev-dev \
+            libdrm-dev \
+            libgbm-dev \
+            libasound2-dev \
+            libdbus-1-dev \
+            libx11-dev \
+            libxext-dev \
+            libxrender-dev \
+            libxcursor-dev \
+            libxcb1-dev \
+            libxcb-render0-dev \
+            libxcb-shape0-dev \
+            libxcb-xfixes0-dev \
+            libxi-dev \
+            libxrandr-dev \
+            libxkbcommon-dev \
+            libwayland-dev \
+            wayland-protocols \
+            libegl1-mesa-dev \
+            libgl1-mesa-dev \
+            libvulkan-dev \
+            clang \
+            cmake
+
       - name: rustfmt
         run: cargo fmt --check
 
@@ -60,6 +93,38 @@ jobs:
 
       - name: Rust build cache
         uses: Swatinem/rust-cache@v2
+
+      - name: Install Linux build dependencies
+        shell: bash
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential \
+            pkg-config \
+            libssl-dev \
+            libudev-dev \
+            libdrm-dev \
+            libgbm-dev \
+            libasound2-dev \
+            libdbus-1-dev \
+            libx11-dev \
+            libxext-dev \
+            libxrender-dev \
+            libxcursor-dev \
+            libxcb1-dev \
+            libxcb-render0-dev \
+            libxcb-shape0-dev \
+            libxcb-xfixes0-dev \
+            libxi-dev \
+            libxrandr-dev \
+            libxkbcommon-dev \
+            libwayland-dev \
+            wayland-protocols \
+            libegl1-mesa-dev \
+            libgl1-mesa-dev \
+            libvulkan-dev \
+            clang \
+            cmake
 
       - name: clippy (nvidia-nvml)
         run: cargo clippy --features nvidia-nvml -- -D warnings
