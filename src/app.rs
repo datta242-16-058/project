@@ -319,7 +319,11 @@ impl App {
             }
         };
 
-        push_history_capped(&mut self.disk_read_mibs_history, (self.tick_count, read_mibs), 100);
+        push_history_capped(
+            &mut self.disk_read_mibs_history,
+            (self.tick_count, read_mibs),
+            100,
+        );
         push_history_capped(
             &mut self.disk_write_mibs_history,
             (self.tick_count, write_mibs),
@@ -579,7 +583,11 @@ impl App {
         // Update Chart Data with EXACT Global CPU Usage
         let global_cpu = self.collector.get_global_cpu_usage();
 
-        push_history_capped(&mut self.cpu_history, (self.tick_count, global_cpu as f64), 100);
+        push_history_capped(
+            &mut self.cpu_history,
+            (self.tick_count, global_cpu as f64),
+            100,
+        );
 
         // Convert to f64 for calculations
         let (used_mem, total_mem) = self.collector.get_memory_stats();
@@ -615,7 +623,11 @@ impl App {
             .and_then(|s| s.dedicated_used_mib)
             .unwrap_or(0.0)
             .max(0.0);
-        push_history_capped(&mut self.gpu_vram_history, (self.tick_count, gpu_vram_used), 100);
+        push_history_capped(
+            &mut self.gpu_vram_history,
+            (self.tick_count, gpu_vram_used),
+            100,
+        );
     }
 
     pub fn on_key(&mut self, key: KeyEvent) {
