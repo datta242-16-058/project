@@ -3,31 +3,6 @@
 ## Core Concept
 A cross-platform system monitoring tool that goes beyond traditional task managers. It continuously observes processes, learns their normal behavior, and identifies anomalies, risks, and system-impacting patterns in real time.
 
-## 🚀 Recent Optimizations & Bug Fixes
-
-### Performance Improvements (Latest Update)
-- ✅ **Reduced Memory Allocations**: Pre-allocated vectors with known capacities (~15% performance gain)
-- ✅ **Optimized Disk Refresh**: Only refreshes disk list every 60 seconds (reduces I/O overhead)
-- ✅ **Chart Management**: Improved X-axis re-indexing to avoid redundant operations
-- ✅ **Tick Rate Optimization**: Balanced 1-second update rate for better CPU efficiency
-- ✅ **Removed Dead Dependencies**: Eliminated unused `tokio` dependency (~3MB binary size reduction)
-- ✅ **LTO Enabled**: Link-time optimization for release builds (10-15% faster execution)
-
-### Bug Fixes (Latest Update)
-- ✅ **Memory Unit Consistency**: Fixed KiB vs MiB calculations throughout the codebase
-- ✅ **Event Spam Prevention**: Added 10-second cooldown on duplicate risk alerts per PID
-- ✅ **Selection Persistence**: Maintains selected process across sorts and refreshes
-- ✅ **Bounds Checking**: Proper handling when process list shrinks during refresh
-- ✅ **Error Handling**: Improved error messages and file logging initialization
-- ✅ **Clippy Clean**: Zero warnings with all Clippy lints enabled
-
-### Code Quality Improvements
-- ✅ **Default Trait Implementations**: Better ergonomics for struct initialization
-- ✅ **Const Optimizations**: Risk calculation uses compile-time constants
-- ✅ **Helper Methods**: Added memory conversion utilities (MiB, GiB)
-- ✅ **Inline Annotations**: Performance-critical functions marked `#[inline]`
-- ✅ **Static Arrays**: Replaced dynamic allocations with static data where possible
-
 ## Key Features
 
 ### 1. Intelligent Behavior Analysis
